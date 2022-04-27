@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LuaObfuscator": {
+      "commandName": "Project",
+      "commandLineArgs": "demo_file.lua demo_settings.json"
+    }
+  }
+}
