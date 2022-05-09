@@ -21,12 +21,13 @@ namespace LuaObfuscator
                 {
                     Functions = new Dictionary<string, Settings>()
                     {
-                        {"ObfuscateMeLow", new Settings() { MutateAllLiterals = new int[] { 20 } } },
-                        {"ObfuscateMeMedium", new Settings() { MutateAllLiterals = new int[] { 30 } } },
-                        {"ObfuscateMeHard", new Settings() { MutateAllLiterals = new int[] { 80, 80 } } },
+                        {"ObfuscateMeLow", new Settings() { MutateAllLiterals = new int[] { 30 } } },
+                        {"ObfuscateMeMedium", new Settings() { MutateAllLiterals = new int[] { 60, 10 } } },
+                        {"ObfuscateMeHard", new Settings() { MutateAllLiterals = new int[] { 80, 33, 80 } } },
                     },
                 };
 
+                #region DemoScript
                 string demoScript = @"function NoObfuscate()
     local a = 123
     local b = 901
@@ -53,19 +54,6 @@ function ObfuscateMeLow()
     return a, b, c
 end
 
-function ObfuscateMeHard()
-    local a = 123
-    local b = 901
-    local c = 420
-
-    if a > b then
-        c = (a/2)+2
-    else
-        c = (b-a)*8
-    end
-    return a, b, c
-end
-
 function ObfuscateMeMedium()
     local a = 123
     local b = 901
@@ -78,7 +66,22 @@ function ObfuscateMeMedium()
     end
     return a, b, c
 end
+
+function ObfuscateMeHard()
+    local a = 123
+    local b = 901
+    local c = 420
+
+    if a > b then
+        c = (a/2)+2
+    else
+        c = (b-a)*8
+    end
+    return a, b, c
+end
 ";
+                #endregion
+
                 File.WriteAllText("demo_file.lua", demoScript);
                 File.WriteAllText("demo_settings.json", JsonConvert.SerializeObject(demoSettings));
                 return;

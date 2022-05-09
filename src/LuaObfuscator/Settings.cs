@@ -10,6 +10,6 @@ namespace LuaObfuscator
     {
         public Dictionary<string, Settings> Functions { get; set; }
         public Dictionary<string, Settings> Variables { get; set; }
-        public int[] MutateAllLiterals { get; set; }
+        public int[] MutateAllLiterals { get; set; } // NOTE: represents percentage value
     }
 }

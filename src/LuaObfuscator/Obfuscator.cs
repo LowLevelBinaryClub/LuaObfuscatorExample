@@ -24,7 +24,7 @@ namespace LuaObfuscator
             Script = s;
             Init();
         }
-
+        
         // init
         //
         public List<string> Init() // init with raw script
@@ -78,6 +78,25 @@ namespace LuaObfuscator
             if (settings.MutateAllLiterals != null)
                 foreach (var i in settings.MutateAllLiterals)
                     MutateAllLiterals(node, i);
+
+            // iterate functions
+            if(settings.Functions != null)
+            {
+                List<LuaNode> funcs = new List<LuaNode>();
+                FindAll(node, LuaNode.NodeType.Function, ref funcs);
+                foreach(var f in funcs)
+                {
+                    string name = GetFunctionName((NodeFunction)f);
+                    if(settings.Functions.ContainsKey(name))
+                        DoObfuscation(f, settings.Functions[name]);
+                }
+            }
+
+            // TODO: iterate variables
+            if(settings.Variables != null)
+            {
+
+            }
 
             return;
         }
@@ -167,6 +186,22 @@ namespace LuaObfuscator
 
             node.Replace(target, replace);
         }
+        public string GetFunctionName(NodeFunction function)
+        {
+            if (function.Parent == null)
+                return ""; // err
+
+            var parent = function.Parent;
+            if (parent.Type == LuaNode.NodeType.Assignment)
+            {
+                NodeAssignment ass = (NodeAssignment)parent;
+                if (ass.Targets.Length == 1 && ass.Values.Length == 1)
+                    return ass.Targets[0].ToString();
+            }
+
+            return ""; // nothing found?
+        }
+
 
         // Obfuscator interface
         //
